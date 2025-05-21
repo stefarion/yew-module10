@@ -26,14 +26,31 @@ pub fn login() -> Html {
         Callback::from(move |_| *user.username.borrow_mut() = (*username).clone())
     };
     html! {
-        <div class="bg-gray-800 flex w-screen">
-            <div class="container mx-auto flex flex-col justify-center items-center	">
-                <form class="m-4 flex">
-                    <input {oninput} class="rounded-l-lg p-4 border-t mr-0 border-b border-l text-gray-800 border-gray-200 bg-white" placeholder="Username"/>
-                    <Link<Route> to={Route::Chat}> <button {onclick} disabled={username.len()<1} class="px-8 rounded-r-lg bg-violet-600	  text-white font-bold p-4 uppercase border-violet-600 border-t border-b border-r" >{"Go Chatting!"}</button></Link<Route>>
-                </form>
+        <div class="bg-gradient-to-br from-violet-700 to-indigo-900 min-h-screen w-screen flex items-center justify-center">
+            <div class="bg-white/90 rounded-2xl shadow-2xl p-8 w-full max-w-md flex flex-col items-center">
+            <h1 class="text-4xl font-black text-violet-700 mb-6 tracking-tight drop-shadow-lg text-center">
+                {"Welcome to YewChat"}
+            </h1>
+            <p class="text-base text-gray-700 mb-8 text-center font-medium">
+                {"Enter your username to start chatting with the community!"}
+            </p>
+            <form class="w-full flex" onsubmit={Callback::from(|e: FocusEvent| e.prevent_default())}>
+                <input
+                {oninput}
+                class="flex-1 rounded-l-lg px-4 py-2 text-base border-gray-200 text-gray-800 bg-white focus:outline-none focus:ring-2 focus:ring-violet-400"
+                placeholder="Username"
+                />
+                <Link<Route> to={Route::Chat} classes="contents">
+                <button
+                    {onclick}
+                    disabled={username.is_empty()}
+                    class="px-6 py-2 rounded-r-lg bg-violet-600 text-white font-bold text-base uppercase border-violet-600 transition-colors duration-200 hover:bg-violet-700 disabled:opacity-50"
+                >
+                    {"Go Chatting!"}
+                </button>
+                </Link<Route>>
+            </form>
             </div>
         </div>
     }
 }
-

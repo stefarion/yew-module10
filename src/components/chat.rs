@@ -89,11 +89,7 @@ impl Component for Chat {
                             .iter()
                             .map(|u| UserProfile {
                                 name: u.into(),
-                                avatar: format!(
-                                    "https://avatars.dicebear.com/api/adventurer-neutral/{}.svg",
-                                    u
-                                )
-                                .into(),
+                                avatar: "/images/CustomProfile.jpg".into(),
                             })
                             .collect();
                         return true;
@@ -112,7 +108,6 @@ impl Component for Chat {
             Msg::SubmitMessage => {
                 let input = self.chat_input.cast::<HtmlInputElement>();
                 if let Some(input) = input {
-                    //log::debug!("got input: {:?}", input.value());
                     let message = WebSocketMessage {
                         message_type: MsgTypes::Message,
                         data: Some(input.value()),
@@ -144,7 +139,9 @@ impl Component for Chat {
                             html!{
                                 <div class="flex m-3 bg-white rounded-lg p-2">
                                     <div>
-                                        <img class="w-12 h-12 rounded-full" src={u.avatar.clone()} alt="avatar"/>
+                                        <div class="flex items-center h-full">
+                                            <img class="w-12 h-12 rounded-full" src={u.avatar.clone()} alt="avatar"/>
+                                        </div>
                                     </div>
                                     <div class="flex-grow p-3">
                                         <div class="flex text-xs justify-between">
@@ -161,12 +158,15 @@ impl Component for Chat {
                 </div>
                 <div class="grow h-screen flex flex-col">
                     <div class="w-full h-14 border-b-2 border-gray-300"><div class="text-xl p-3">{"💬 Chat!"}</div></div>
-                    <div class="w-full grow overflow-auto border-b-2 border-gray-300">
+                    <div
+                        class="grow h-screen flex flex-col overflow-y-auto"
+                        style="background-image: url('/images/Background.jpg'); background-size: cover; background-position: center;"
+                    >
                         {
                             self.messages.iter().map(|m| {
                                 let user = self.users.iter().find(|u| u.name == m.from).unwrap();
                                 html!{
-                                    <div class="flex items-end w-3/6 bg-gray-100 m-8 rounded-tl-lg rounded-tr-lg rounded-br-lg ">
+                                    <div class="flex items-end w-3/6 bg-white/80 backdrop-blur-sm m-4 rounded-lg p-3">
                                         <img class="w-8 h-8 rounded-full m-3" src={user.avatar.clone()} alt="avatar"/>
                                         <div class="p-3">
                                             <div class="text-sm">
